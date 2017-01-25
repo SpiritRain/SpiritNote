@@ -6,7 +6,9 @@ import {
   Alert,
 } from 'react-native';
 import CounterScene from './../containers/CounterScene';
-import MainPage from './../containers/MainPage';
+import MainScene from './../containers/MainScene';
+import MemoMainScene from './../containers/MemoMainScene';
+import MemoListPage from './../containers/MemoListPage';
 
 export default class NavigatorRoute extends Component {
 
@@ -30,7 +32,20 @@ export default class NavigatorRoute extends Component {
 
 	static replaceToMainScene(navigator) {
 		navigator.replace({
-			component: MainPage,
+			component: MainScene,
+		});
+	}
+
+	static replaceToMemoScene(navigator) {
+		navigator.replace({
+			component: MemoMainScene,
+		});
+	}
+
+	static pushToMemoListPage(navigator, data) {
+		navigator.push({
+			component: MemoListPage,
+			data: data
 		});
 	}
 

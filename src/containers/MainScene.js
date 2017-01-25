@@ -8,7 +8,7 @@ import {
 
 const {height, width} = Dimensions.get('window');
 
-export default class MainPage extends Component {
+export default class MainScene extends Component {
 	constructor(props) {
 		super(props);
 	}

@@ -3,44 +3,43 @@
 import React, {Component} from 'react';
 import {
 	StyleSheet,
-	View,
 	Text,
-	TouchableOpacity
+	TouchableOpacity,
+	View
 } from 'react-native';
 
 export default class Tabbar extends Component {
 	constructor(props) {
 		super(props);
+		this.state={
+			active: 0
+		}
+	}
+
+	_onTabPress(index){
+		this.setState({active: index});
+		this.props.tabConfig[index].onTabPress();
+	}
+
+	_renderTab(index){
+		let style = this.state.active==index?styles.tabActive:styles.tabInActive;
+		return (
+			<TouchableOpacity style={style} onPress={() => this._onTabPress(index)}>
+				<View>
+					<Text>{this.props.tabConfig[index].title}</Text>
+				</View>
+			</TouchableOpacity>
+		);
 	}
 
 	render() {
 		return (
 			<View style={styles.container}>
-				<TouchableOpacity style={styles.tabItem} onPress={() => this.props.onTabPress('tab1')}>
-					<View>
-						<Text>Item 1</Text>
-					</View>
-				</TouchableOpacity>
-				<TouchableOpacity style={styles.tabItem} onPress={() => this.props.onTabPress('tab2')}>
-					<View>
-						<Text>Item 2</Text>
-					</View>
-				</TouchableOpacity>
-				<TouchableOpacity style={styles.tabItem} onPress={() => this.props.onTabPress('tab3')}>
-					<View>
-						<Text>Item 3</Text>
-					</View>
-				</TouchableOpacity>
-				<TouchableOpacity style={styles.tabItem} onPress={() => this.props.onTabPress('tab4')}>
-					<View>
-						<Text>Item 4</Text>
-					</View>
-				</TouchableOpacity>
-				<TouchableOpacity style={styles.tabItem} onPress={() => this.props.onTabPress('tab5')}>
-					<View>
-						<Text>Item 5</Text>
-					</View>
-				</TouchableOpacity>
+				{this._renderTab(0)}
+				{this._renderTab(1)}
+				{this._renderTab(2)}
+				{this._renderTab(3)}
+				{this._renderTab(4)}
 			</View>
 		);
 	}
@@ -48,16 +47,23 @@ export default class Tabbar extends Component {
 
 const styles = StyleSheet.create({
 	container: {
-		bottom: 0,
-		alignSelf: 'flex-end',
+		height: 48,
 		flexDirection: 'row',
+		backgroundColor: 'firebrick',
 		borderTopWidth: 1,
-		borderTopColor: 'green'
+		borderTopColor: 'darkblue'
 	},
-	tabItem: {
+	tabActive: {
+		flex: 1,
+		borderBottomWidth: 5,
+		borderBottomColor: 'skyblue',
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	tabInActive: {
 		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'center',
-		height: 56,
 	},
+
 });
