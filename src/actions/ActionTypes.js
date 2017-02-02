@@ -5,8 +5,13 @@
 export const INCREMENT = 'INCREMENT';
 export const DECREMENT = 'DECREMENT';
 
-//memo
-export const ADD_MEMO = 'ADD_MEMO';
-export const REMOVE_MEMO = 'REMOVE_MEMO';
-export const TOGGLE_MEMO = 'TOGGLE_MEMO';
+//memoEvent
+export const ADD_MEMO_EVENT = 'ADD_MEMO_EVENT';
+export const EDIT_MEMO_EVENT = 'EDIT_MEMO_EVENT';
+export const REMOVE_MEMO_EVENT = 'REMOVE_MEMO_EVENT';
+
+//memoItem
+export const ADD_MEMO_ITEM = 'ADD_MEMO_ITEM';
+export const REMOVE_MEMO_ITEM = 'REMOVE_MEMO_ITEM';
+export const TOGGLE_MEMO_ITEM = 'TOGGLE_MEMO_ITEM';
 

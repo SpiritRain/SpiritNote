@@ -8,6 +8,7 @@ import {
 import CounterScene from './../containers/CounterScene';
 import MainScene from './../containers/MainScene';
 import MemoMainScene from './../containers/MemoMainScene';
+import MemoEventCreatePage from './../containers/MemoEventCreatePage';
 import MemoListPage from './../containers/MemoListPage';
 
 export default class NavigatorRoute extends Component {
@@ -39,6 +40,12 @@ export default class NavigatorRoute extends Component {
 	static replaceToMemoScene(navigator) {
 		navigator.replace({
 			component: MemoMainScene,
+		});
+	}
+
+	static pushToMemoEventCreatePage(navigator) {
+		navigator.push({
+			component: MemoEventCreatePage,
 		});
 	}
 

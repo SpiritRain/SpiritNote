@@ -1,6 +1,5 @@
 module.exports = {
 	convertStringToTime(timeString, fmt) {
-		timeString = timeString * 1000;
 		let date = new Date(timeString);
 		return date.Format(fmt);
 	}

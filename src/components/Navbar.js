@@ -30,7 +30,7 @@ export default class Navbar extends Component {
 
 	_renderBackButton(){
 		let text = this.props.backButtonText 
-		if (text == '') {
+		if (text == null || text === '') {
 			text = 'Back'
 		}
 		return (
@@ -42,7 +42,7 @@ export default class Navbar extends Component {
 
 	_renderMoreButton(){
 		let text = this.props.moreButtonText 
-		if (text == '') {
+		if (text == null || text === '' ) {
 			text = 'More'
 		}
 		return (

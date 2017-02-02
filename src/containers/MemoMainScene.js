@@ -3,10 +3,19 @@ import {
 	Dimensions,
 	Image,
 	ListView,
+	View,
+	TextInput,
+	Text,
+	TouchableOpacity,
 	StyleSheet
 } from 'react-native';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 import * as Constants from '../Constants'
-import MemoItem from '../components/MemoItem'
+import * as memoEventActions from '../actions/MemoEventAction';
+import * as countActions from '../actions/CounterAction';
+import MemoEvent from '../components/MemoEvent'
+import Navbar from '../components/Navbar'
 import NavigatorRoute from './../modules/NavigatorRoute';
 
 const {height, width} = Dimensions.get('window');
@@ -15,39 +24,65 @@ let ds = new ListView.DataSource({
 });
 
 let TEST_DATA = [{
+		id: 1,
 		title: 'title1',
 		desc: 'desc',
-		img: null,
+		image: null,
 		date: 0,
 	} , {
+		id: 2,
 		title: 'title2',
 		desc: null,
-		img: null,
+		image: null,
 		date: 0,
 	} ,
 ]
 
-export default class MemoMainScene extends Component {
+class MemoMainScene extends Component {
 	constructor(props) {
 		super(props);
+		this.state={
+			inputText: ''
+		}
 	}
 
 	_onItemPress(data){
-		console.log('_onItemPress: ' + data)
 		NavigatorRoute.pushToMemoListPage(this.props.navigator, data);
 	}
 
 	_renderRow(rowData){
 		return (
-			<MemoItem data={rowData} onPress={()=>this._onItemPress(rowData)} />
+			<MemoEvent
+				data={rowData}
+				onPress={()=>this._onItemPress(rowData)}
+				onEditPress={()=>this._onEditPress(rowData)}
+			 />
 		);
 	}
-	
+
+	_onAddPress(){
+		console.log('on add press')
+		NavigatorRoute.pushToMemoEventCreatePage(this.props.navigator)
+	}
+
+	_onEditPress(id){
+		console.log('edit:' + id)
+		console.log(id)
+		this.props.actions.removeMemoEvent(id.id);
+	}
+
 	render() {
+		console.log('render')
 		return (
 			<Image style={styles.container} source={Constants.IMAGE_BG} resizeMode='cover'>
+				<Navbar
+					navigator={this.props.navigator} 
+					showMoreButton={true}
+					moreButtonText='Add'
+					onMorePress={()=>this._onAddPress()}
+				/>
 				<ListView
-					dataSource={ds.cloneWithRows(TEST_DATA)}
+					dataSource={ds.cloneWithRows(this.props.memoEvent.eventList)}
 					enableEmptySections={true}
 					renderRow={(rowData)=>this._renderRow(rowData)}
 					/>
@@ -56,6 +91,16 @@ export default class MemoMainScene extends Component {
 	}
 }
 
+export default connect(state => ({
+		memoEvent: state.memoEvent,
+		counter: state.counter
+	}),
+	(dispatch) => ({
+		actions: bindActionCreators(memoEventActions, dispatch),
+		actions1: bindActionCreators(countActions, dispatch),
+	})
+)(MemoMainScene);
+
 const styles = StyleSheet.create({
 	container:{
 		flex: 1,
@@ -63,5 +108,21 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		width: width,
 		height: height
-	}
+	},
+	inputContainer:{
+		alignItems: 'center',
+		flexDirection: 'row'
+	},
+	input: {
+		width: 200,
+		color: '#555555',
+		padding: 10,
+		height: 40,
+		borderColor: '#32C5E6',
+		borderWidth: 1,
+		borderRadius: 4,
+		marginTop: 10,
+		alignSelf: 'center',
+		backgroundColor: '#ffffff'
+	},
 });
