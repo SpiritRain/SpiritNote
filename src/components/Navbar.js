@@ -13,18 +13,52 @@ export default class Navbar extends Component {
 		super(props);
 	}
 
+	_onNavBackPress(){
+		if (this.props.onBackPress == null) {
+			this.props.navigator.pop();
+		} else {
+			this.props.onBackPress()
+		}
+	}
+
+	_onNaveMorePress(){
+		if (this.props.onMorePress == null) {
+		} else {
+			this.props.onMorePress()
+		}
+	}
+
+	_renderBackButton(){
+		let text = this.props.backButtonText 
+		if (text == '') {
+			text = 'Back'
+		}
+		return (
+			<TouchableOpacity style={styles.backButton} onPress={() => this._onNavBackPress()}>
+				<Text>{text}</Text>
+			</TouchableOpacity>
+		);
+	}
+
+	_renderMoreButton(){
+		let text = this.props.moreButtonText 
+		if (text == '') {
+			text = 'More'
+		}
+		return (
+			<TouchableOpacity style={styles.moreButton} onPress={() => this._onNaveMorePress()}>
+				<Text>{text}</Text>
+			</TouchableOpacity>
+		);
+	}
 	render() {
 		return (
 			<View style={styles.container}>
-				<TouchableOpacity style={styles.backButton} onPress={() => {}}>
-					<Text>back</Text>
-				</TouchableOpacity>
+				{this.props.showBackButton?this._renderBackButton():null}
 				<View style={styles.title}>
 					<Text>This is Nav bar</Text>
 				</View>
-				<TouchableOpacity style={styles.moreButton} onPress={() => {}}>
-					<Text>More</Text>
-				</TouchableOpacity>
+				{this.props.showMoreButton?this._renderMoreButton():null}
 			</View>
 		);
 	}
@@ -39,13 +73,13 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 	},
 	backButton: {
-		backgroundColor: 'red',
+		alignItems: 'center',
 	},
 	title: {
 		flex: 1,
-		backgroundColor: 'yellow',
+		alignItems: 'center',
 	},
 	moreButton: {
-		backgroundColor: 'green',
+		alignItems: 'center',
 	},
 });
