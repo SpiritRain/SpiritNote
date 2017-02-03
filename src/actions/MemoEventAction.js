@@ -13,7 +13,7 @@ export function addMemoEvent(title, desc, image, date) {
 
 export function editMemoEvent(id, title, desc, image, date) {
 	return {
-		type: types.ADD_MEMO_EVENT,
+		type: types.EDIT_MEMO_EVENT,
 		id: id,
 		title: title,
 		desc: desc,

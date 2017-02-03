@@ -50,29 +50,25 @@ class MemoMainScene extends Component {
 		NavigatorRoute.pushToMemoListPage(this.props.navigator, data);
 	}
 
-	_renderRow(rowData){
+	_onEditPress(id){
+		this.props.actions.removeMemoEvent(id);
+	}
+
+	_renderRow(rowData, sectionID, rowID){
 		return (
 			<MemoEvent
 				data={rowData}
 				onPress={()=>this._onItemPress(rowData)}
-				onEditPress={()=>this._onEditPress(rowData)}
+				onEditPress={()=>this._onEditPress(rowID)}
 			 />
 		);
 	}
 
 	_onAddPress(){
-		console.log('on add press')
 		NavigatorRoute.pushToMemoEventCreatePage(this.props.navigator)
 	}
 
-	_onEditPress(id){
-		console.log('edit:' + id)
-		console.log(id)
-		this.props.actions.removeMemoEvent(id.id);
-	}
-
 	render() {
-		console.log('render')
 		return (
 			<Image style={styles.container} source={Constants.IMAGE_BG} resizeMode='cover'>
 				<Navbar
@@ -84,7 +80,7 @@ class MemoMainScene extends Component {
 				<ListView
 					dataSource={ds.cloneWithRows(this.props.memoEvent.eventList)}
 					enableEmptySections={true}
-					renderRow={(rowData)=>this._renderRow(rowData)}
+					renderRow={(rowData, sectionID, rowID)=>this._renderRow(rowData, sectionID, rowID)}
 					/>
 			</Image>
 		);

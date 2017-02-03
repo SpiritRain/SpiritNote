@@ -4,9 +4,7 @@ import React, {Component} from 'react';
 import {
 	Dimensions,
 	Image,
-	ListView,
 	StyleSheet,
-	Switch,
 	Text,
 	TextInput,
 	TouchableOpacity,
@@ -16,9 +14,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as Constants from '../Constants'
 import * as memoEventActions from '../actions/MemoEventAction';
-import MemoEvent from '../components/MemoEvent'
 import Navbar from '../components/Navbar'
-import NavigatorRoute from './../modules/NavigatorRoute';
 
 const {height, width} = Dimensions.get('window');
 
@@ -37,7 +33,7 @@ class MemoEventCreatePage extends Component {
 			return;
 		}
 		this.props.actions.addMemoEvent(this.state.title, this.state.desc,  null, new Date().getTime());
-		NavigatorRoute.navigatorPopBack(this.props.navigator);
+		this.props.navigator.pop()
 	}
 
 	render() {
