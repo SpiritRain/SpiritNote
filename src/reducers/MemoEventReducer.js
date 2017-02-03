@@ -24,7 +24,6 @@ const initialState = {
 
 
 export default function memoEvent(state = initialState, action = {}) {
-	let newList = state.eventList
 	switch (action.type) {
 		case types.ADD_MEMO_EVENT:
 			state.lastID = state.lastID + 1;
@@ -40,9 +39,9 @@ export default function memoEvent(state = initialState, action = {}) {
 			};
 		case types.EDIT_MEMO_EVENT:
 			state.eventList[action.id].title = action.title;
-			state.eventList[action.desc].title = action.desc;
-			state.eventList[action.image].title = action.image;
-			state.eventList[action.editDate].title = new Date();
+			state.eventList[action.id].desc = action.desc;
+			state.eventList[action.id].image = action.image;
+			state.eventList[action.id].editDate = action.date;
 			return {
 				...state
 			};

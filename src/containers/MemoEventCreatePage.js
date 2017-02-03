@@ -32,7 +32,7 @@ class MemoEventCreatePage extends Component {
 		if (this.state.title === '') {
 			return;
 		}
-		this.props.actions.addMemoEvent(this.state.title, this.state.desc,  null, new Date().getTime());
+		this.props.actions.addMemoEvent(this.state.title, this.state.desc,  null, new Date());
 		this.props.navigator.pop()
 	}
 
