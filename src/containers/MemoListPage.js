@@ -4,7 +4,6 @@ import {
 	Image,
 	ListView,
 	StyleSheet,
-	Switch,
 	Text,
 	TextInput,
 	TouchableOpacity,
@@ -13,7 +12,9 @@ import {
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as Constants from '../Constants'
-import * as memoActions from '../actions/MemoAction';
+import * as memoItemActions from '../actions/MemoItemAction';
+import MemoItem from '../components/MemoItem'
+import Navbar from '../components/Navbar'
 
 const {height, width} = Dimensions.get('window');
 
@@ -22,23 +23,6 @@ let ds = new ListView.DataSource({
 	sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
 });
 
-
-let TEST_DATA = {
-	'section1': [
-		{id: 1, name:'item1', completed: false},
-		{id: 2, name:'item2', completed: true},
-		{id: 3, name:'item3', completed: false},
-		{id: 4, name:'item4', completed: false},
-	],
-	'section2': [
-		{id: 5, name:'s2 item1', completed: false},
-		{id: 6, name:'s2 item2', completed: false},
-		{id: 7, name:'s2 item3', completed: false},
-		{id: 8, name:'s2 item4', completed: true},
-	]
-}
-
-let inputText = '';
 class MemoListPage extends Component {
 	constructor(props) {
 		super(props);
@@ -55,25 +39,26 @@ class MemoListPage extends Component {
 		);
 	}
 
-	_renderSeparator(sectionID, rowID){
+	_renderRow(rowData, sectionID, rowID){
 		return (
-			<View style={styles.separator} key={sectionID+rowID}>
-			</View>
-		);
-	}
-
-	_renderRow(rowData){
-		return (
-			<View style={styles.rowContainer}>
-				<Switch onValueChange={this._onValueChange} value={rowData.completed}></Switch>
-				<Text>{rowData.name}</Text>
-			</View>
+			<MemoItem
+				data={rowData}
+				onItemPress={()=>this._onTogglePress(sectionID, rowID)}
+				onButtonPress={()=>this._onRemovePress(sectionID, rowID)}
+				buttonText='remove'
+			 />
 		);
 	}
 
 	render() {
 		return (
 			<Image style={styles.container} source={Constants.IMAGE_BG} resizeMode='cover'>
+				<Navbar
+					navigator={this.props.navigator} 
+					showMoreButton={true}
+					showBackButton={true}
+				/>
+
 				<View style={styles.inputContainer}>
 					<TextInput 
 						style={styles.input}
@@ -87,29 +72,32 @@ class MemoListPage extends Component {
  				</View>
 
 				<ListView
-					dataSource={ds.cloneWithRowsAndSections(TEST_DATA)}
-					renderRow={(rowData)=>this._renderRow(rowData)}
+					dataSource={ds.cloneWithRowsAndSections(this.props.memoItem.itemList)}
+					renderRow={(rowData, sectionID, rowID)=>this._renderRow(rowData ,sectionID, rowID)}
 					renderSectionHeader={this._renderSectionHeader}
-					renderSeparator={(sectionID, rowID)=>this._renderSeparator(sectionID, rowID)}
 					/>
 			</Image>
 		);
 	}
 
 	_onAddPress(){
-		this.props.actions.addMemo(1, this.state.input)
+		this.props.actions.createMemoItem(this.state.inputText)
 	}
 
-	_onValueChange(){
+	_onTogglePress(sectionID, rowID){
+		this.props.actions.toggleMemoItem(sectionID, rowID)
 	}
 
+	_onRemovePress(sectionID, rowID){
+		this.props.actions.removeMemoItem(sectionID, rowID)
+	}
 }
 
 export default connect(state => ({
-		memoItem: state.memoItem
+		memoItem: state.memoItem,
 	}),
 	(dispatch) => ({
-		actions: bindActionCreators(memoActions, dispatch)
+		actions: bindActionCreators(memoItemActions, dispatch),
 	})
 )(MemoListPage);
 
@@ -138,23 +126,10 @@ const styles = StyleSheet.create({
 		backgroundColor: '#ffffff'
 	},
 	sectionHeader : {
-		backgroundColor : '#f5f5f5' ,
+		backgroundColor : 'skyblue' ,
 		margin : 1,
 		alignItems: 'flex-start',
 		justifyContent:'center',
 		height: 40
-	},
-	rowContainer : {
-		backgroundColor : '#f5f5f5' ,
-		flexDirection: 'row',
-		margin : 1,
-		alignItems: 'center',
-		height: 30
-	},
-	separator : {
-		margin : 1,
-		alignItems: 'center',
-		height: 5
-	},
-
+	}
 });

@@ -12,17 +12,20 @@ import * as Constants from '../Constants'
 import * as Utils from '../modules/Utils'
 
 export default class MemoEvent extends Component {
-	constructor(props) {
-		super(props);
-	}
+	static propTypes = {
+		image: React.PropTypes.object,
+		data: React.PropTypes.object.isRequired,
+		onPress: React.PropTypes.func.isRequired,
+		onEditPress: React.PropTypes.func.isRequired,
+	};
 
 	render() {
 		return (
 			<View style={styles.container}>
-				<TouchableOpacity style={styles.imageContainer} onPress={()=>this.props.onEditPress(this.props.data.id)}>
+				<TouchableOpacity style={styles.imageContainer} onPress={this.props.onEditPress}>
 					<Image style={styles.image} source={this.props.data.image==null?Constants.IMAGE_MEMO_DEFAULT:this.props.data.image}></Image>
 				</TouchableOpacity>
-				<TouchableOpacity style={styles.infoContainer} onPress={()=>this.props.onPress()}>
+				<TouchableOpacity style={styles.infoContainer} onPress={this.props.onPress}>
 					<View style={styles.titleContainer}>
 						<View style={styles.title}>
 							<Text>{this.props.data.title}</Text>

@@ -2,87 +2,55 @@
 
 import React, {Component} from 'react';
 import {
-	Image,
 	StyleSheet,
 	Text,
-	TouchableOpacity,
-	View
+	TouchableOpacity
 } from 'react-native';
-import * as Constants from '../Constants'
-import * as Utils from '../modules/Utils'
 
 export default class MemoItem extends Component {
-	constructor(props) {
-		super(props);
-	}
+	static propTypes = {
+		buttonText: React.PropTypes.string,
+		data: React.PropTypes.object.isRequired,
+		onItemPress: React.PropTypes.func.isRequired,
+		onButtonPress: React.PropTypes.func.isRequired,
+	};
 
 	render() {
-		let date = this.props.data.date;
-		let dateStr = Utils.convertStringToTime(date, 'yyyy年MM月dd日');
-
+		let style = this.props.data.compeleted? styles.textCompleted: styles.textNormal;
+		let text = this.props.buttonText
+		if (text == null || text === '') {
+			text = 'Button'
+		}
 		return (
-			<View style={styles.container}>
-				<TouchableOpacity style={styles.imageContainer} onPress={()=>{}}>
-					<Image style={styles.image} source={this.props.data.image==null?Constants.IMAGE_MEMO_DEFAULT:this.props.data.image}></Image>
+			<TouchableOpacity style={styles.container} onPress={this.props.onItemPress}>
+				<Text style={style}>{this.props.data.name}</Text>
+				<TouchableOpacity style={styles.button} onPress={this.props.onButtonPress}>
+					<Text>{text}</Text>
 				</TouchableOpacity>
-				<TouchableOpacity style={styles.infoContainer} onPress={()=>this.props.onPress()}>
-					<View style={styles.titleContainer}>
-						<View style={styles.title}>
-							<Text>{this.props.data.title}</Text>
-						</View>
-						<Image style={styles.editer} source={Constants.IMAGE_EDIT}></Image>
-					</View>
-					<View style={styles.descContainer}>
-						<Text>{this.props.data.desc}</Text>
-					</View>
-					<View style={styles.dateContainer}>
-						<Text>{dateStr}</Text>
-					</View>
-				</TouchableOpacity>
-			</View>
+			</TouchableOpacity>
 		);
 	}
 }
 
 const styles = StyleSheet.create({
 	container : {
-		flexDirection : 'row' ,
 		backgroundColor : '#f5f5f5' ,
-		margin : 15,
-		borderRadius : 5,
-		alignItems: 'stretch',
-		height: 120
-	},
-	imageContainer:{
-		justifyContent: 'center',
-	},
-	image: {
-		margin: 5,
-		height: 100,
-		width: 100
-	},
-	infoContainer:{
-		flex: 1,
-		alignItems: 'stretch',
-	},
-	titleContainer:{
 		flexDirection: 'row',
 		alignItems: 'center',
+		justifyContent: 'space-between',
+		borderTopWidth: 1,
+		paddingHorizontal: 10,
+		height: 30
 	},
-	title:{
-		flex: 1,
-		alignItems: 'center',
+	textNormal: {
+		color: 'black',
+		fontStyle: 'normal'
 	},
-	editer:{
-		height: 20,
-		width: 20
+	textCompleted: {
+		color: 'grey',
+		fontStyle: 'italic'
 	},
-	descContainer:{
-		flex: 1,
-		alignItems: 'flex-start',
-	},
-	dateContainer:{
-		alignItems: 'flex-end',
-		margin: 5
+	button : {
+		backgroundColor: 'red',
 	},
 });

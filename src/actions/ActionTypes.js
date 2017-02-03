@@ -12,6 +12,7 @@ export const REMOVE_MEMO_EVENT = 'REMOVE_MEMO_EVENT';
 
 //memoItem
 export const ADD_MEMO_ITEM = 'ADD_MEMO_ITEM';
+export const CREATE_MEMO_ITEM = 'CREATE_MEMO_ITEM';
 export const REMOVE_MEMO_ITEM = 'REMOVE_MEMO_ITEM';
 export const TOGGLE_MEMO_ITEM = 'TOGGLE_MEMO_ITEM';
 
