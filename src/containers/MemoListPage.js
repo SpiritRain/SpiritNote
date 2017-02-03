@@ -15,6 +15,7 @@ import * as Constants from '../Constants'
 import * as memoItemActions from '../actions/MemoItemAction';
 import MemoItem from '../components/MemoItem'
 import Navbar from '../components/Navbar'
+import NavigatorRoute from './../modules/NavigatorRoute';
 
 const {height, width} = Dimensions.get('window');
 
@@ -45,7 +46,7 @@ class MemoListPage extends Component {
 				data={rowData}
 				onItemPress={()=>this._onTogglePress(sectionID, rowID)}
 				onButtonPress={()=>this._onRemovePress(sectionID, rowID)}
-				buttonText='remove'
+				buttonText='删除'
 			 />
 		);
 	}
@@ -57,7 +58,17 @@ class MemoListPage extends Component {
 					navigator={this.props.navigator} 
 					showMoreButton={true}
 					showBackButton={true}
+					onMorePress={()=>this._onMorePress()}
 				/>
+
+				<View style={styles.listView}>
+					<ListView
+						
+						dataSource={ds.cloneWithRowsAndSections(this.props.memoItem.itemList)}
+						renderRow={(rowData, sectionID, rowID)=>this._renderRow(rowData ,sectionID, rowID)}
+						renderSectionHeader={this._renderSectionHeader}
+						/>
+				</View>
 
 				<View style={styles.inputContainer}>
 					<TextInput 
@@ -66,22 +77,19 @@ class MemoListPage extends Component {
 						onChangeText={(text) => {this.setState({inputText:text})}}
 						multiline={false}
 					/>
-					<TouchableOpacity onPress={()=>this._onAddPress()}>
-						<Text>add</Text>
+					<TouchableOpacity style={styles.button} onPress={()=>this._onAddPress()}>
+						<Text>快速添加</Text>
 					</TouchableOpacity>
  				</View>
-
-				<ListView
-					dataSource={ds.cloneWithRowsAndSections(this.props.memoItem.itemList)}
-					renderRow={(rowData, sectionID, rowID)=>this._renderRow(rowData ,sectionID, rowID)}
-					renderSectionHeader={this._renderSectionHeader}
-					/>
 			</Image>
 		);
 	}
 
 	_onAddPress(){
-		this.props.actions.createMemoItem(this.state.inputText)
+		if (this.state.inputText != '') {
+			this.props.actions.createMemoItem(this.state.inputText)
+			this.setState({inputText: ''})
+		}
 	}
 
 	_onTogglePress(sectionID, rowID){
@@ -90,6 +98,9 @@ class MemoListPage extends Component {
 
 	_onRemovePress(sectionID, rowID){
 		this.props.actions.removeMemoItem(sectionID, rowID)
+	}
+
+	_onMorePress(){
 	}
 }
 
@@ -110,24 +121,34 @@ const styles = StyleSheet.create({
 		height: height
 	},
 	inputContainer:{
-		alignItems: 'center',
+		flex: 1,
+		alignItems: 'stretch',
 		flexDirection: 'row'
 	},
 	input: {
-		width: 200,
+		flex: 1,
 		color: '#555555',
 		padding: 10,
-		height: 40,
 		borderColor: '#32C5E6',
 		borderWidth: 1,
 		borderRadius: 4,
-		marginTop: 10,
-		alignSelf: 'center',
 		backgroundColor: '#ffffff'
 	},
+	button: {
+		backgroundColor : '#ef5421',
+		alignItems: 'center',
+		justifyContent: 'center',
+		borderRadius : 5,
+		overflow:'hidden',
+		borderColor : '#ef5421',
+		padding: 5
+	},
+	listView:{
+		flex: 11
+	},
 	sectionHeader : {
-		backgroundColor : 'skyblue' ,
-		margin : 1,
+		backgroundColor : 'lightgrey' ,
+		marginTop : 5,
 		alignItems: 'flex-start',
 		justifyContent:'center',
 		height: 40

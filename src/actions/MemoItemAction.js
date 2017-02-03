@@ -2,7 +2,6 @@
 import * as types from './ActionTypes';
 
 export function addMemoItem(key, id) {
-	console.log('addMemoItem')
 	return {
 		type: types.ADD_MEMO_ITEM,
 		key: key,
@@ -11,7 +10,6 @@ export function addMemoItem(key, id) {
 }
 
 export function createMemoItem(name) {
-	console.log('addMemoItem')
 	return {
 		type: types.CREATE_MEMO_ITEM,
 		name: name

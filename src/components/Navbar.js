@@ -9,9 +9,16 @@ import {
 } from 'react-native';
 
 export default class Navbar extends Component {
-	constructor(props) {
-		super(props);
-	}
+	static propTypes = {
+		navigator: React.PropTypes.object.isRequired,
+		navbarText: React.PropTypes.string,
+		backButtonText: React.PropTypes.string,
+		moreButtonText: React.PropTypes.string,
+		onBackPress: React.PropTypes.func,
+		onMorePress: React.PropTypes.func,
+		showBackButton: React.PropTypes.bool,
+		showMoreButton: React.PropTypes.bool,
+	};
 
 	_onNavBackPress(){
 		if (this.props.onBackPress == null) {
@@ -51,7 +58,12 @@ export default class Navbar extends Component {
 			</TouchableOpacity>
 		);
 	}
+
 	render() {
+		let text = this.props.navbarText 
+		if (text == null || text === '' ) {
+			text = 'This is Nav bar'
+		}
 		return (
 			<View style={styles.container}>
 				{this.props.showBackButton?this._renderBackButton():null}
