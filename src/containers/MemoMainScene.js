@@ -3,6 +3,7 @@ import {
 	Dimensions,
 	Image,
 	ListView,
+	Modal,
 	View,
 	TextInput,
 	Text,
@@ -42,6 +43,7 @@ class MemoMainScene extends Component {
 	constructor(props) {
 		super(props);
 		this.state={
+			modalVisible: false,
 			inputText: ''
 		}
 	}
@@ -65,12 +67,24 @@ class MemoMainScene extends Component {
 	}
 
 	_onAddPress(){
-		NavigatorRoute.pushToMemoEventCreatePage(this.props.navigator)
+		 this.setState({modalVisible: true});
+		// NavigatorRoute.pushToMemoEventCreatePage(this.props.navigator)
 	}
 
 	render() {
 		return (
 			<Image style={styles.container} source={Constants.IMAGE_BG} resizeMode='cover'>
+				<Modal
+					transparent={true}
+					visible={this.state.modalVisible}
+					onRequestClose={() => {alert("Modal has been closed.")}}
+					>
+					<View style={styles.modal}>
+						<TouchableOpacity style={styles.button} onPress={() => this.setState({modalVisible: false})}>
+							<Text>Hide Modal</Text>
+						</TouchableOpacity>
+					</View>
+				</Modal>
 				<Navbar
 					navigator={this.props.navigator} 
 					showMoreButton={true}
@@ -121,4 +135,13 @@ const styles = StyleSheet.create({
 		alignSelf: 'center',
 		backgroundColor: '#ffffff'
 	},
+	modal: {
+		backgroundColor: 'skyblue',
+		width: 200,
+		height: 200
+	},
+	button: {
+		backgroundColor: 'red',
+
+	}
 });

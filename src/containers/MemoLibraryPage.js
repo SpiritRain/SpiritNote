@@ -24,7 +24,7 @@ let ds = new ListView.DataSource({
 	sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
 });
 
-class MemoListPage extends Component {
+class MemoLibraryPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state={
@@ -46,7 +46,7 @@ class MemoListPage extends Component {
 				data={rowData}
 				onItemPress={()=>this._onTogglePress(sectionID, rowID)}
 				onButtonPress={()=>this._onRemovePress(sectionID, rowID)}
-				buttonText='删除'
+				buttonText='添加'
 			 />
 		);
 	}
@@ -59,7 +59,6 @@ class MemoListPage extends Component {
 					showMoreButton={true}
 					showBackButton={true}
 					onMorePress={()=>this._onMorePress()}
-					navbarText={this.props.route.data.title}
 				/>
 
 				<View style={styles.listView}>
@@ -102,7 +101,6 @@ class MemoListPage extends Component {
 	}
 
 	_onMorePress(){
-		NavigatorRoute.pushToMemoLibraryPage(this.props.navigator, this.props.data)
 	}
 }
 
@@ -112,7 +110,7 @@ export default connect(state => ({
 	(dispatch) => ({
 		actions: bindActionCreators(memoItemActions, dispatch),
 	})
-)(MemoListPage);
+)(MemoLibraryPage);
 
 const styles = StyleSheet.create({
 	container:{

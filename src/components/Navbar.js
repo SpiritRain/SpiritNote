@@ -60,7 +60,7 @@ export default class Navbar extends Component {
 	}
 
 	render() {
-		let text = this.props.navbarText 
+		let text = this.props.navbarText
 		if (text == null || text === '' ) {
 			text = 'This is Nav bar'
 		}
@@ -68,7 +68,7 @@ export default class Navbar extends Component {
 			<View style={styles.container}>
 				{this.props.showBackButton?this._renderBackButton():null}
 				<View style={styles.title}>
-					<Text>This is Nav bar</Text>
+					<Text>{text}</Text>
 				</View>
 				{this.props.showMoreButton?this._renderMoreButton():null}
 			</View>

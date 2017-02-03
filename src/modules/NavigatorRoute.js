@@ -10,6 +10,7 @@ import MainScene from './../containers/MainScene';
 import MemoMainScene from './../containers/MemoMainScene';
 import MemoEventCreatePage from './../containers/MemoEventCreatePage';
 import MemoListPage from './../containers/MemoListPage';
+import MemoLibraryPage from './../containers/MemoLibraryPage';
 
 export default class NavigatorRoute extends Component {
 
@@ -52,6 +53,13 @@ export default class NavigatorRoute extends Component {
 	static pushToMemoListPage(navigator, data) {
 		navigator.push({
 			component: MemoListPage,
+			data: data
+		});
+	}
+
+	static pushToMemoLibraryPage(navigator, data) {
+		navigator.push({
+			component: pushToMemoLibraryPage,
 			data: data
 		});
 	}
