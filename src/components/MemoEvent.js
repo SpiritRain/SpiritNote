@@ -17,6 +17,7 @@ export default class MemoEvent extends Component {
 		data: React.PropTypes.object.isRequired,
 		onPress: React.PropTypes.func.isRequired,
 		onEditPress: React.PropTypes.func.isRequired,
+		onRemovePress: React.PropTypes.func.isRequired,
 	};
 
 	render() {
@@ -30,7 +31,9 @@ export default class MemoEvent extends Component {
 						<View style={styles.title}>
 							<Text>{this.props.data.title}</Text>
 						</View>
-						<Image style={styles.editer} source={Constants.IMAGE_EDIT}></Image>
+						<TouchableOpacity onPress={this.props.onRemovePress}>
+							<Image style={styles.editer} source={Constants.IMAGE_EDIT}></Image>
+						</TouchableOpacity>
 					</View>
 					<View style={styles.descContainer}>
 						<Text>{this.props.data.desc}</Text>

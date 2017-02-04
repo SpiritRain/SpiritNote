@@ -2,18 +2,19 @@
 
 import React, {Component} from 'react';
 import {
-	Modal,
 	StyleSheet,
 	Text,
-	TouchableOpacity
+	TextInput,
+	TouchableOpacity,
+	View
 } from 'react-native';
 
 export default class MemoEventEditor extends Component {
 	static propTypes = {
 		visible: React.PropTypes.bool,
-		data: React.PropTypes.object.isRequired,
-		onLeftPress: React.PropTypes.func.isRequired,
-		onRightPress: React.PropTypes.func.isRequired,
+		data: React.PropTypes.object,
+		onConfirmPress: React.PropTypes.func.isRequired,
+		onCancelPress: React.PropTypes.func.isRequired,
 	};
 
 	constructor(props) {
@@ -24,64 +25,64 @@ export default class MemoEventEditor extends Component {
 		}
 	}
 
-	_onLeftPress(){
-		console.log('this is left button')
+	_onConfirmPress(){
+		console.log('this is Confirm button')
+		this.props.onConfirmPress(this.props.data.id, this.state.title, this.state.desc)
 	}
 
-	_onRightPress(){
+	_onCancelPress(){
 		console.log('this is right button')
+		this.props.onCancelPress()
 	}
 
 	render() {
 		return (
-			<Modal visible={this.props.visible}>
-				<View style={styles.inputContainer}>
-					<Text style={styles.text}>title:</Text>
-					<TextInput 
-						style={styles.input}
-						value={this.state.title}
-						onChangeText={(text) => {this.setState({title:text})}}
-						multiline={false}
-					/>
- 				</View>
-				<View style={styles.inputContainer}>
-					<Text style={styles.text}>desc:</Text>
-					<TextInput 
-						style={styles.input}
-						value={this.state.desc}
-						onChangeText={(text) => {this.setState({desc:text})}}
-					/>
-				</View>
-				<View style={styles.inputContainer}>
-					<TouchableOpacity style={styles.button} onPress={()=>this._onLeftPress()}>
-						<Text style={styles.text}>Left</Text>
+			<View style={styles.container}>
+				<Text style={styles.text}>title:</Text>
+				<TextInput 
+					style={styles.input}
+					value={this.state.title}
+					onChangeText={(text) => {this.setState({title:text})}}
+					multiline={false}
+				/>
+				<Text style={styles.text}>desc:</Text>
+				<TextInput 
+					style={styles.input}
+					value={this.state.desc}
+					onChangeText={(text) => {this.setState({desc:text})}}
+				/>
+				<View style={styles.buttonContainer}>
+					<TouchableOpacity style={styles.button} onPress={()=>this._onConfirmPress()}>
+						<Text style={styles.text}>确定</Text>
 					</TouchableOpacity>
-					<TouchableOpacity style={styles.button} onPress={()=>this._onRightPress()}>
-						<Text style={styles.text}>Right</Text>
+					<TouchableOpacity style={styles.button} onPress={()=>this._onCancelPress()}>
+						<Text style={styles.text}>取消</Text>
 					</TouchableOpacity>
 				</View>
-			</Modal>
+			</View>
 		);
 	}
 }
 
 const styles = StyleSheet.create({
 	container:{
-		flex: 1,
-		alignItems: 'center',
-		justifyContent: 'flex-start',
-		width: width,
-		height: height
+		borderRadius: 5,
+		borderWidth: 1,
+		backgroundColor: 'skyblue',
+		alignItems: 'stretch',
+		justifyContent: 'center',
 	},
-	inputContainer:{
-		alignItems: 'center',
-		flexDirection: 'row'
+	text: {
+		color : '#f5f5f5' ,
+		backgroundColor : 'transparent',
+		textAlign : 'center',
+		margin: 10
 	},
 	input: {
-		width: 200,
 		color: '#555555',
+		width: 200,
+		height: 50,
 		padding: 10,
-		height: 40,
 		borderColor: '#32C5E6',
 		borderWidth: 1,
 		borderRadius: 4,
@@ -89,19 +90,16 @@ const styles = StyleSheet.create({
 		alignSelf: 'center',
 		backgroundColor: '#ffffff'
 	},
+	buttonContainer:{
+		alignItems: 'center',
+		flexDirection: 'row'
+	},
 	button: {
 		backgroundColor : '#003161',
 		alignItems: 'center',
 		justifyContent: 'center',
 		borderRadius : 5,
 		alignSelf : 'center',
-		width: width* 0.6,
 		margin : 10,
 	},
-	text: {
-		color : '#f5f5f5' ,
-		backgroundColor : 'transparent',
-		textAlign : 'center',
-		margin: 10
-	}
 });

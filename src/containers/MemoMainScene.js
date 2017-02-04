@@ -16,6 +16,7 @@ import * as Constants from '../Constants'
 import * as memoEventActions from '../actions/MemoEventAction';
 import * as countActions from '../actions/CounterAction';
 import MemoEvent from '../components/MemoEvent'
+import MemoEventEditor from '../components/MemoEventEditor'
 import Navbar from '../components/Navbar'
 import NavigatorRoute from './../modules/NavigatorRoute';
 
@@ -25,13 +26,11 @@ let ds = new ListView.DataSource({
 });
 
 let TEST_DATA = [{
-		id: 1,
 		title: 'title1',
 		desc: 'desc',
 		image: null,
 		date: 0,
 	} , {
-		id: 2,
 		title: 'title2',
 		desc: null,
 		image: null,
@@ -43,7 +42,11 @@ class MemoMainScene extends Component {
 	constructor(props) {
 		super(props);
 		this.state={
-			modalVisible: false,
+			editVisible: false,
+			editData: {},
+			addVisible: false,
+			title: '',
+			desc: '',
 			inputText: ''
 		}
 	}
@@ -56,33 +59,73 @@ class MemoMainScene extends Component {
 		this.props.actions.removeMemoEvent(id);
 	}
 
-	_renderRow(rowData, sectionID, rowID){
+	_renderRow(rowData){
 		return (
 			<MemoEvent
 				data={rowData}
 				onPress={()=>this._onItemPress(rowData)}
-				onEditPress={()=>this._onEditPress(rowID)}
+				onEditPress={()=>this._onEditPress(rowData)}
+				onRemovePress={()=>this._onRemovePress(rowData.id)}
 			 />
 		);
 	}
 
 	_onAddPress(){
-		 this.setState({modalVisible: true});
-		// NavigatorRoute.pushToMemoEventCreatePage(this.props.navigator)
+		this.setState({addVisible: true});
+	}
+
+	_onEditPress(rowData){
+		this.setState({editData: rowData, editVisible: true})
+	}
+
+	_onAddConfirmPress(id, title, desc){
+		this.setState({addVisible: false})
+		if (title != undefined && title !== '') {
+			this.props.actions.addMemoEvent(title, desc, null, new Date())
+		}
+	}
+
+	_onEditConfirmPress(id, title, desc){
+		this.setState({editVisible: false})
+		if (title != undefined && title !== '') {
+			this.props.actions.editMemoEvent(id, title, desc, null, new Date())
+		}
+	}
+
+	_onCancelPress(){
+		this.setState({modalVisible: false})
+	}
+
+	_onRemovePress(id){
+		this.props.actions.removeMemoEvent(id)
 	}
 
 	render() {
+		console.log(this.props.memoEvent)
 		return (
 			<Image style={styles.container} source={Constants.IMAGE_BG} resizeMode='cover'>
 				<Modal
 					transparent={true}
-					visible={this.state.modalVisible}
-					onRequestClose={() => {alert("Modal has been closed.")}}
+					visible={this.state.addVisible}
 					>
-					<View style={styles.modal}>
-						<TouchableOpacity style={styles.button} onPress={() => this.setState({modalVisible: false})}>
-							<Text>Hide Modal</Text>
-						</TouchableOpacity>
+					<View style={styles.modalContainer}>
+						<MemoEventEditor
+							data={{title: ''}}
+							onConfirmPress={(id, title, desc)=>this._onAddConfirmPress(id, title, desc)}
+							onCancelPress={()=>this.setState({addVisible: false})}
+							/>
+					</View>
+				</Modal>
+				<Modal
+					transparent={true}
+					visible={this.state.editVisible}
+					>
+					<View style={styles.modalContainer}>
+						<MemoEventEditor
+							data={this.state.editData}
+							onConfirmPress={(id, title, desc)=>this._onEditConfirmPress(id, title, desc)}
+							onCancelPress={()=>this.setState({editVisible: false})}
+							/>
 					</View>
 				</Modal>
 				<Navbar
@@ -92,9 +135,9 @@ class MemoMainScene extends Component {
 					onMorePress={()=>this._onAddPress()}
 				/>
 				<ListView
-					dataSource={ds.cloneWithRows(this.props.memoEvent.eventList)}
+					dataSource={ds.cloneWithRows(this.props.memoEvent)}
 					enableEmptySections={true}
-					renderRow={(rowData, sectionID, rowID)=>this._renderRow(rowData, sectionID, rowID)}
+					renderRow={(rowData)=>this._renderRow(rowData)}
 					/>
 			</Image>
 		);
@@ -119,29 +162,9 @@ const styles = StyleSheet.create({
 		width: width,
 		height: height
 	},
-	inputContainer:{
-		alignItems: 'center',
-		flexDirection: 'row'
+	modalContainer: {
+		flex: 1,
+		justifyContent: 'center',
+		padding: 20,
 	},
-	input: {
-		width: 200,
-		color: '#555555',
-		padding: 10,
-		height: 40,
-		borderColor: '#32C5E6',
-		borderWidth: 1,
-		borderRadius: 4,
-		marginTop: 10,
-		alignSelf: 'center',
-		backgroundColor: '#ffffff'
-	},
-	modal: {
-		backgroundColor: 'skyblue',
-		width: 200,
-		height: 200
-	},
-	button: {
-		backgroundColor: 'red',
-
-	}
 });

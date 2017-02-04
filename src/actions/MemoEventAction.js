@@ -1,9 +1,12 @@
 'use strict';
 import * as types from './ActionTypes';
 
+let nextEventID = 3
+
 export function addMemoEvent(title, desc, image, date) {
 	return {
 		type: types.ADD_MEMO_EVENT,
+		id: nextEventID++,
 		title: title,
 		desc: desc,
 		image: image,
