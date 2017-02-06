@@ -23,7 +23,7 @@ export default class MemoEvent extends Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				<TouchableOpacity style={styles.imageContainer} onPress={this.props.onEditPress}>
+				<TouchableOpacity style={styles.imageContainer} onPress={this.props.onRemovePress}>
 					<Image style={styles.image} source={this.props.data.image==null?Constants.IMAGE_MEMO_DEFAULT:this.props.data.image}></Image>
 				</TouchableOpacity>
 				<TouchableOpacity style={styles.infoContainer} onPress={this.props.onPress}>
@@ -31,7 +31,7 @@ export default class MemoEvent extends Component {
 						<View style={styles.title}>
 							<Text>{this.props.data.title}</Text>
 						</View>
-						<TouchableOpacity onPress={this.props.onRemovePress}>
+						<TouchableOpacity onPress={this.props.onEditPress}>
 							<Image style={styles.editer} source={Constants.IMAGE_EDIT}></Image>
 						</TouchableOpacity>
 					</View>
@@ -39,10 +39,10 @@ export default class MemoEvent extends Component {
 						<Text>{this.props.data.desc}</Text>
 					</View>
 					<View style={styles.dateContainer}>
-						<Text>{'创建时间: ' + Utils.convertStringToTime(this.props.data.createDate, 'yyyy年MM月dd日')}</Text>
+						<Text>{'创建: ' + Utils.convertStringToTime(this.props.data.createDate, 'yyyy年MM月dd日')}</Text>
 					</View>
 					<View style={styles.dateContainer}>
-						<Text>{'修改时间: ' + Utils.convertStringToTime(this.props.data.editDate, 'yyyy年MM月dd日')}</Text>
+						<Text>{'修改: ' + Utils.convertStringToTime(this.props.data.editDate, 'yyyy年MM月dd日')}</Text>
 					</View>
 				</TouchableOpacity>
 			</View>

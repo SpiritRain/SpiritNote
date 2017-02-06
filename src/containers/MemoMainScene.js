@@ -101,7 +101,6 @@ class MemoMainScene extends Component {
 	}
 
 	render() {
-		console.log(this.props.memoEvent)
 		return (
 			<Image style={styles.container} source={Constants.IMAGE_BG} resizeMode='cover'>
 				<Modal
@@ -138,6 +137,7 @@ class MemoMainScene extends Component {
 					dataSource={ds.cloneWithRows(this.props.memoEvent)}
 					enableEmptySections={true}
 					renderRow={(rowData)=>this._renderRow(rowData)}
+					removeClippedSubviews={false}
 					/>
 			</Image>
 		);

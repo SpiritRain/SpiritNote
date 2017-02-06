@@ -9,24 +9,18 @@ import {
 } from 'react-native';
 
 export default class Tabbar extends Component {
-	constructor(props) {
-		super(props);
-		this.state={
-			active: 0
-		}
-	}
+	static propTypes = {
+		data: React.PropTypes.object.isRequired,
+		onTabPress: React.PropTypes.func.isRequired
+	};
 
-	_onTabPress(index){
-		this.setState({active: index});
-		this.props.tabConfig[index].onTabPress();
-	}
 
 	_renderTab(index){
-		let style = this.state.active==index?styles.tabActive:styles.tabInActive;
+		let style = this.props.data.current==index?styles.tabActive:styles.tabInActive;
 		return (
-			<TouchableOpacity style={style} onPress={() => this._onTabPress(index)}>
+			<TouchableOpacity style={style} onPress={() => this.props.onTabPress(index)}>
 				<View>
-					<Text>{this.props.tabConfig[index].title}</Text>
+					<Text>{this.props.data.tabList[index].title}</Text>
 				</View>
 			</TouchableOpacity>
 		);

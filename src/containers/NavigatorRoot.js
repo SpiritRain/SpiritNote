@@ -7,32 +7,18 @@ import {
 	StatusBar,
 	View
 } from 'react-native';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 import MemoMainScene from './../containers/MemoMainScene';
 import Tabbar from './../components/Tabbar';
+import * as tabActions from '../actions/TabAction';
 import Navbar from './../components/Navbar';
 import NavigatorRoute from './../modules/NavigatorRoute';
 
 let _navigator = null;
-let _tabConfig;
-export default class NavigatorRoot extends Component {
+class NavigatorRoot extends Component {
 	constructor(props) {
 		super(props);
-		_tabConfig = [{
-				title: 'main',
-				onTabPress: this._onMainTabPress
-			}, {
-				title: 'memo',
-				onTabPress: this._onMemoTabPress
-			}, {
-				title: 'tab3',
-				onTabPress: ()=>this._onTabPress('tab3')
-			}, {
-				title: 'tab4',
-				onTabPress: ()=>this._onTabPress('tab4')
-			}, {
-				title: 'counter',
-				onTabPress: ()=>this._onTabPress('tab5')
-			}];
 	}
 
 	render() {
@@ -46,7 +32,9 @@ export default class NavigatorRoot extends Component {
 					renderScene={this._renderScene}
 					initialRoute={{component: MemoMainScene}}
 				/>
-				<Tabbar tabConfig={_tabConfig}/>
+				<Tabbar
+					data={this.props.tab}
+					onTabPress={(tab)=>this._onTabPress(tab)}/>
 			</View>
 		);
 	}
@@ -70,39 +58,9 @@ export default class NavigatorRoot extends Component {
 		return 
 	}
 
-	_onMainTabPress(){
-		_tabConfig[0].active = true;
-		NavigatorRoute.replaceToMainScene(_navigator);
-	}
-
-	_onMemoTabPress(){
-		_tabConfig[1].active = true;
-		NavigatorRoute.replaceToMemoScene(_navigator);
-	}
-
 	_onTabPress(tab){
-		switch(tab){
-			case 'tab1':
-				console.log('this is tab1');
-				NavigatorRoute.replaceToMainScene(_navigator);
-				return;
-			case 'tab2':
-				console.log('this is tab2');
-				NavigatorRoute.replaceToMemoScene(_navigator);
-				return;
-			case 'tab3':
-				console.log('this is tab3');
-				return;
-			case 'tab4':
-				console.log('this is tab4');
-				return;
-			case 'tab5':
-				console.log('this is tab5');
-				NavigatorRoute.pushToCounterScene(_navigator);
-				return;
-			default:
-				return;
-		}
+		this.props.actions.switchTab(tab, _navigator.getCurrentRoutes());
+		_navigator.immediatelyResetRouteStack(this.props.tab.tabList[tab].routes)
 	}
 
 	componentDidMount() {
@@ -115,3 +73,12 @@ export default class NavigatorRoot extends Component {
 		BackAndroid.removeEventListener('hardwareBackPress');
 	}
 }
+
+
+export default connect(state => ({
+		tab: state.tab,
+	}),
+	(dispatch) => ({
+		actions: bindActionCreators(tabActions, dispatch),
+	})
+)(NavigatorRoot);

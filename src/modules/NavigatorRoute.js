@@ -32,18 +32,6 @@ export default class NavigatorRoute extends Component {
 		return true;
 	}
 
-	static replaceToMainScene(navigator) {
-		navigator.replace({
-			component: MainScene,
-		});
-	}
-
-	static replaceToMemoScene(navigator) {
-		navigator.replace({
-			component: MemoMainScene,
-		});
-	}
-
 	static pushToMemoEventCreatePage(navigator) {
 		navigator.push({
 			component: MemoEventCreatePage,
@@ -59,7 +47,7 @@ export default class NavigatorRoute extends Component {
 
 	static pushToMemoLibraryPage(navigator, data) {
 		navigator.push({
-			component: pushToMemoLibraryPage,
+			component: MemoLibraryPage,
 			data: data
 		});
 	}
