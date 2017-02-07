@@ -9,11 +9,21 @@ import {
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import MemoMainScene from './../containers/MemoMainScene';
-import Tabbar from './../components/Tabbar';
+
 import * as tabActions from '../actions/TabAction';
-import Navbar from './../components/Navbar';
-import NavigatorRoute from './../modules/NavigatorRoute';
+import * as ContainerRoutes from '../ContainerRoutes';
+import NavigatorRoute from '../modules/NavigatorRoute';
+
+// compoments
+import Tabbar from '../components/Tabbar';
+import Navbar from '../components/Navbar';
+
+// containers
+import CounterScene from 'CounterScene';
+import MainScene from 'MainScene';
+import MemoMainScene from 'MemoMainScene';
+import MemoListPage from 'MemoListPage';
+import MemoLibraryPage from 'MemoLibraryPage';
 
 let _navigator = null;
 class NavigatorRoot extends Component {
@@ -26,11 +36,10 @@ class NavigatorRoot extends Component {
 			<View style={{flex:1, paddingTop: 20}}>
 				<StatusBar barStyle="light-content"/>
 				<Navigator
-					ref={ (component) => this.navigator = component }
 					style={{flex: 9}}
 					configureScene={this._configureScene}
 					renderScene={this._renderScene}
-					initialRoute={{component: MemoMainScene}}
+					initialRoute={{name: ContainerRoutes.MEMO_MAIN_SCENE}}
 				/>
 				<Tabbar
 					data={this.props.tab}
@@ -40,8 +49,27 @@ class NavigatorRoot extends Component {
 	}
 
 	_renderScene(route, navigator) {
-		let Component = route.component;
-		_navigator = navigator;
+		_navigator = navigator
+		let Component = null;
+		switch(route.name){
+			case ContainerRoutes.MAIN_SCENE:
+				Component = MainScene;
+				break;
+			case ContainerRoutes.MEMO_MAIN_SCENE:
+				Component = MemoMainScene;
+				break;
+			case ContainerRoutes.MEMO_LIST_PAGE:
+				Component = MemoListPage;
+				break;
+			case ContainerRoutes.MEMO_LIBRARY_PAGE:
+				Component = MemoLibraryPage;
+				break;
+			case ContainerRoutes.COUNTER_SCENE:
+				Component = CounterScene;
+				break;
+			default:
+				Component = CounterScene;
+		}
 		return (
 			<Component navigator={navigator} route={route} />
 		);
@@ -60,29 +88,7 @@ class NavigatorRoot extends Component {
 
 	_onTabPress(tab){
 		this.props.actions.switchTab(tab, _navigator.getCurrentRoutes());
-		if (this.props.tab.tabList[tab].routes.length > 0) {
-			_navigator.immediatelyResetRouteStack(this.props.tab.tabList[tab].routes)
-		} else {
-			switch(tab){
-				case 0:
-					NavigatorRoute.replaceToMainScene(_navigator);
-					return
-				case 1:
-					NavigatorRoute.replaceToMemoScene(_navigator);
-					return
-				case 2:
-					NavigatorRoute.replaceToMemoScene(_navigator);
-					return
-				case 3:
-					NavigatorRoute.replaceToMemoScene(_navigator);
-					return
-				case 4:
-					NavigatorRoute.pushToCounterScene(_navigator);
-					return
-				default:
-					return;
-			}
-		}
+		_navigator.immediatelyResetRouteStack(this.props.tab.tabList[tab].routes)
 	}
 
 	componentDidMount() {

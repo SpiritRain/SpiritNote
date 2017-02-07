@@ -5,12 +5,7 @@ import {
   BackAndroid,
   Alert,
 } from 'react-native';
-import CounterScene from './../containers/CounterScene';
-import MainScene from './../containers/MainScene';
-import MemoMainScene from './../containers/MemoMainScene';
-import MemoEventCreatePage from './../containers/MemoEventCreatePage';
-import MemoListPage from './../containers/MemoListPage';
-import MemoLibraryPage from './../containers/MemoLibraryPage';
+import * as ContainerRoutes from '../ContainerRoutes';
 
 export default class NavigatorRoute extends Component {
 
@@ -34,39 +29,33 @@ export default class NavigatorRoute extends Component {
 	
 	static replaceToMainScene(navigator) {
 		navigator.replace({
-			component: MainScene,
+			name: ContainerRoutes.MAIN_SCENE,
 		});
 	}
 
 	static replaceToMemoScene(navigator) {
 		navigator.replace({
-			component: MemoMainScene,
-		});
-	}
-
-	static pushToMemoEventCreatePage(navigator) {
-		navigator.push({
-			component: MemoEventCreatePage,
+			name: ContainerRoutes.MEMO_MAIN_SCENE,
 		});
 	}
 
 	static pushToMemoListPage(navigator, data) {
 		navigator.push({
-			component: MemoListPage,
+			name: ContainerRoutes.MEMO_LIST_PAGE,
 			data: data
 		});
 	}
 
 	static pushToMemoLibraryPage(navigator, data) {
 		navigator.push({
-			component: MemoLibraryPage,
+			name: ContainerRoutes.MEMO_LIBRARY_PAGE,
 			data: data
 		});
 	}
 
 	static pushToCounterScene(navigator) {
 		navigator.push({
-			component: CounterScene,
+			name: ContainerRoutes.COUNTER_SCENE,
 		});
 	}
 

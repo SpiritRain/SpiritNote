@@ -1,5 +1,6 @@
 'use strict';
 import * as types from './../actions/ActionTypes';
+import * as ContainerRoutes from '../ContainerRoutes';
 
 export default function tabbar(state = initialState, action = {}) {
 	let newList = [...state.tabList];
@@ -21,19 +22,19 @@ const initialState = {
 	tabList: [
 		{
 			title: 'main',
-			routes: [],
+			routes: [{name: ContainerRoutes.MAIN_SCENE}],
 		}, {
 			title: 'memo',
-			routes: [],
+			routes: [{name: ContainerRoutes.MEMO_MAIN_SCENE}],
 		}, {
 			title: 'tab2',
-			routes: [],
+			routes: [{name: ContainerRoutes.MEMO_MAIN_SCENE}],
 		}, {
 			title: 'tab3',
-			routes: [],
+			routes: [{name: ContainerRoutes.MEMO_MAIN_SCENE}],
 		}, {
 			title: 'count',
-			routes: [],
+			routes: [{name: ContainerRoutes.COUNTER_SCENE}],
 		},
 	]
 }

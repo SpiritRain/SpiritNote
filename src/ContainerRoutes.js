@@ -1,0 +1,7 @@
+export const MAIN_SCENE = 'MAIN_SCENE';
+
+export const MEMO_MAIN_SCENE = 'MEMO_MAIN_SCENE';
+export const MEMO_LIST_PAGE = 'MEMO_LIST_PAGE';
+export const MEMO_LIBRARY_PAGE = 'MEMO_LIBRARY_PAGE';
+
+export const COUNTER_SCENE = 'COUNTER_SCENE';
