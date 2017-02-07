@@ -1,8 +1,5 @@
 'use strict';
 import * as types from './../actions/ActionTypes';
-import CounterScene from './../containers/CounterScene';
-import MainScene from './../containers/MainScene';
-import MemoMainScene from './../containers/MemoMainScene';
 
 export default function tabbar(state = initialState, action = {}) {
 	let newList = [...state.tabList];
@@ -24,19 +21,19 @@ const initialState = {
 	tabList: [
 		{
 			title: 'main',
-			routes: [{component: MainScene}],
+			routes: [],
 		}, {
 			title: 'memo',
-			routes: [{component: MemoMainScene}],
+			routes: [],
 		}, {
 			title: 'tab2',
-			routes: [{component: MainScene}],
+			routes: [],
 		}, {
 			title: 'tab3',
-			routes: [{component: MainScene}],
+			routes: [],
 		}, {
 			title: 'count',
-			routes: [{component: CounterScene}],
+			routes: [],
 		},
 	]
 }

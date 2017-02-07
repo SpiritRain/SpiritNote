@@ -60,7 +60,29 @@ class NavigatorRoot extends Component {
 
 	_onTabPress(tab){
 		this.props.actions.switchTab(tab, _navigator.getCurrentRoutes());
-		_navigator.immediatelyResetRouteStack(this.props.tab.tabList[tab].routes)
+		if (this.props.tab.tabList[tab].routes.length > 0) {
+			_navigator.immediatelyResetRouteStack(this.props.tab.tabList[tab].routes)
+		} else {
+			switch(tab){
+				case 0:
+					NavigatorRoute.replaceToMainScene(_navigator);
+					return
+				case 1:
+					NavigatorRoute.replaceToMemoScene(_navigator);
+					return
+				case 2:
+					NavigatorRoute.replaceToMemoScene(_navigator);
+					return
+				case 3:
+					NavigatorRoute.replaceToMemoScene(_navigator);
+					return
+				case 4:
+					NavigatorRoute.pushToCounterScene(_navigator);
+					return
+				default:
+					return;
+			}
+		}
 	}
 
 	componentDidMount() {
