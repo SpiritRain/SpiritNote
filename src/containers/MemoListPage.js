@@ -64,8 +64,7 @@ class MemoListPage extends Component {
 
 				<View style={styles.listView}>
 					<ListView
-						
-						dataSource={ds.cloneWithRowsAndSections(this.props.memoItem.itemList)}
+						dataSource={ds.cloneWithRowsAndSections(this.props.route.data.itemList)}
 						renderRow={(rowData, sectionID, rowID)=>this._renderRow(rowData ,sectionID, rowID)}
 						renderSectionHeader={this._renderSectionHeader}
 						/>

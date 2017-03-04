@@ -19,16 +19,22 @@ import Tabbar from '../components/Tabbar';
 import Navbar from '../components/Navbar';
 
 // containers
-import CounterScene from 'CounterScene';
-import MainScene from 'MainScene';
-import MemoMainScene from 'MemoMainScene';
-import MemoListPage from 'MemoListPage';
-import MemoLibraryPage from 'MemoLibraryPage';
+import CounterScene from './CounterScene';
+import MainScene from './MainScene';
+import MemoMainScene from './MemoMainScene';
+import MemoListPage from './MemoListPage';
+import MemoLibraryPage from './MemoLibraryPage';
 
 let _navigator = null;
 class NavigatorRoot extends Component {
-	constructor(props) {
-		super(props);
+	componentDidMount() {
+		BackAndroid.addEventListener('hardwareBackPress', () => {
+			return NavigatorRoute.navigatorPopBack(_navigator);
+		});
+	}
+
+	componentWillUnmount() {
+		BackAndroid.removeEventListener('hardwareBackPress');
 	}
 
 	render() {
@@ -87,18 +93,7 @@ class NavigatorRoot extends Component {
 	}
 
 	_onTabPress(tab){
-		this.props.actions.switchTab(tab, _navigator.getCurrentRoutes());
-		_navigator.immediatelyResetRouteStack(this.props.tab.tabList[tab].routes)
-	}
-
-	componentDidMount() {
-		BackAndroid.addEventListener('hardwareBackPress', () => {
-			return NavigatorRoute.navigatorPopBack(_navigator);
-		});
-	}
-
-	componentWillUnmount() {
-		BackAndroid.removeEventListener('hardwareBackPress');
+		this.props.actions.switchTab(tab);
 	}
 }
 
